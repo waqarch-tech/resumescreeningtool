@@ -14,7 +14,158 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      candidates: {
+        Row: {
+          certifications: Json
+          created_at: string
+          education: Json
+          email: string | null
+          embedding: string | null
+          error_text: string | null
+          experience_years: number | null
+          file_name: string
+          file_path: string
+          id: string
+          job_id: string
+          match_score: number | null
+          missing_skills: string[]
+          name: string | null
+          phone: string | null
+          projects: Json
+          raw_text: string | null
+          score_breakdown: Json | null
+          skills: string[]
+          status: Database["public"]["Enums"]["candidate_status"]
+          strengths: string[]
+          summary: string | null
+          user_id: string
+          weaknesses: string[]
+          work_experience: Json
+        }
+        Insert: {
+          certifications?: Json
+          created_at?: string
+          education?: Json
+          email?: string | null
+          embedding?: string | null
+          error_text?: string | null
+          experience_years?: number | null
+          file_name: string
+          file_path: string
+          id?: string
+          job_id: string
+          match_score?: number | null
+          missing_skills?: string[]
+          name?: string | null
+          phone?: string | null
+          projects?: Json
+          raw_text?: string | null
+          score_breakdown?: Json | null
+          skills?: string[]
+          status?: Database["public"]["Enums"]["candidate_status"]
+          strengths?: string[]
+          summary?: string | null
+          user_id: string
+          weaknesses?: string[]
+          work_experience?: Json
+        }
+        Update: {
+          certifications?: Json
+          created_at?: string
+          education?: Json
+          email?: string | null
+          embedding?: string | null
+          error_text?: string | null
+          experience_years?: number | null
+          file_name?: string
+          file_path?: string
+          id?: string
+          job_id?: string
+          match_score?: number | null
+          missing_skills?: string[]
+          name?: string | null
+          phone?: string | null
+          projects?: Json
+          raw_text?: string | null
+          score_breakdown?: Json | null
+          skills?: string[]
+          status?: Database["public"]["Enums"]["candidate_status"]
+          strengths?: string[]
+          summary?: string | null
+          user_id?: string
+          weaknesses?: string[]
+          work_experience?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidates_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          education_requirements: string[]
+          embedding: string | null
+          id: string
+          preferred_qualifications: string[]
+          raw_description: string
+          required_experience_years: number
+          required_skills: string[]
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          education_requirements?: string[]
+          embedding?: string | null
+          id?: string
+          preferred_qualifications?: string[]
+          raw_description: string
+          required_experience_years?: number
+          required_skills?: string[]
+          title?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          education_requirements?: string[]
+          embedding?: string | null
+          id?: string
+          preferred_qualifications?: string[]
+          raw_description?: string
+          required_experience_years?: number
+          required_skills?: string[]
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +174,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      candidate_status:
+        | "uploading"
+        | "extracting"
+        | "parsing"
+        | "scoring"
+        | "complete"
+        | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +307,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      candidate_status: [
+        "uploading",
+        "extracting",
+        "parsing",
+        "scoring",
+        "complete",
+        "failed",
+      ],
+    },
   },
 } as const
