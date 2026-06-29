@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedJobsJobIdIndexRouteImport } from './routes/_authenticated/jobs.$jobId.index'
 import { Route as AuthenticatedJobsJobIdUploadRouteImport } from './routes/_authenticated/jobs.$jobId.upload'
 
 const AuthRoute = AuthRouteImport.update({
@@ -28,6 +29,12 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJobsJobIdIndexRoute =
+  AuthenticatedJobsJobIdIndexRouteImport.update({
+    id: '/jobs/$jobId/',
+    path: '/jobs/$jobId/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedJobsJobIdUploadRoute =
   AuthenticatedJobsJobIdUploadRouteImport.update({
     id: '/jobs/$jobId/upload',
@@ -39,11 +46,13 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
   '/jobs/$jobId/upload': typeof AuthenticatedJobsJobIdUploadRoute
+  '/jobs/$jobId/': typeof AuthenticatedJobsJobIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/': typeof AuthenticatedIndexRoute
   '/jobs/$jobId/upload': typeof AuthenticatedJobsJobIdUploadRoute
+  '/jobs/$jobId': typeof AuthenticatedJobsJobIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -51,18 +60,20 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/jobs/$jobId/upload': typeof AuthenticatedJobsJobIdUploadRoute
+  '/_authenticated/jobs/$jobId/': typeof AuthenticatedJobsJobIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/jobs/$jobId/upload'
+  fullPaths: '/' | '/auth' | '/jobs/$jobId/upload' | '/jobs/$jobId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/' | '/jobs/$jobId/upload'
+  to: '/auth' | '/' | '/jobs/$jobId/upload' | '/jobs/$jobId'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/'
     | '/_authenticated/jobs/$jobId/upload'
+    | '/_authenticated/jobs/$jobId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +104,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/jobs/$jobId/': {
+      id: '/_authenticated/jobs/$jobId/'
+      path: '/jobs/$jobId'
+      fullPath: '/jobs/$jobId/'
+      preLoaderRoute: typeof AuthenticatedJobsJobIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/jobs/$jobId/upload': {
       id: '/_authenticated/jobs/$jobId/upload'
       path: '/jobs/$jobId/upload'
@@ -106,11 +124,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedJobsJobIdUploadRoute: typeof AuthenticatedJobsJobIdUploadRoute
+  AuthenticatedJobsJobIdIndexRoute: typeof AuthenticatedJobsJobIdIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedJobsJobIdUploadRoute: AuthenticatedJobsJobIdUploadRoute,
+  AuthenticatedJobsJobIdIndexRoute: AuthenticatedJobsJobIdIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
